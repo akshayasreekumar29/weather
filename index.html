@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEATHER APP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>WEATHER APP</h1>
+    <div class="header">
+        
+            <div class="search">
+                <input type="text" name="" id="input" placeholder="Enter City Name">
+                <button id="search" >Search</button>
+                </input>
+     
+            </div>
+           
+           
+           
+    
+    </div>
+   
+    
+            <div class="weather">
+                <img src="https://cdn-icons-png.flaticon.com/512/1779/1779940.png"width="200" ="weather-icon">
+                <h1 class="temp">22°C</h1>
+                <h2 class="city">New York</h2>
+                <div class="details">
+                    <div class="col">
+                        <img src="https://static-00.iconduck.com/assets.00/humidity-icon-512x419-5m7ztixz.png" width="100"  height="100">
+                        <div>
+                            <p class="humidity">48%</p>
+                            <p>Humidity</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <img src="https://cdn.icon-icons.com/icons2/2098/PNG/512/wind_icon_128694.png" width="100" height="100">
+                        <div> 
+                            <p class="wind">10 km/h</p>
+                            <p>Wind Speed</p>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                    <img src="https://static-00.iconduck.com/assets.00/uv-index-icon-512x512-b80mv3io.png" width="100" height="100">
+                    <div>
+                        <p class="UV index">Moderate</p>
+                        <p>UV Index</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <script>
+    
+            const apiKey = "a0d929d6ae764348ef1ca7881f6668c5";
+            const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+    
+            const searchBox = document.querySelector(".search input");
+            const searchBtn = document.querySelector(".search button");
+             const weatherIcon = document.querySelector(".weather-icon");
+    
+            async function checkWeather(city){
+                const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+                
+                if(response.status == 404){
+                    document.querySelector(".error").style.display = "block";
+                    document.querySelector(".weather").style.display = "none";
+                }else {
+                    var data = await response.json();
+    
+                document.querySelector(".city").innerHTML = data.name;
+                document.querySelector(".temp").innerHTML = Math.round (data.main.temp) + "°C";
+                document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+                document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+    
+                if(data.weather[0].main == "Clouds"){
+                    weatherIcon.src = "images/clouds.png"
+                }
+                else if(data.weather[0].main == "Clear"){
+                    weatherIcon.src = "images/clear.png"
+                }
+                else if(data.weather[0].main == "Rain"){
+                    weatherIcon.src = "images/rain.png"
+                }
+                else if(data.weather[0].main == "Drizzle"){
+                    weatherIcon.src = "images/drizzle.png"
+                }
+                else if(data.weather[0].main == "Mist"){
+                    weatherIcon.src = "images/mist.png"
+                }
+    
+                document.querySelector(".weather").style.display = "block";
+                document.querySelector(".error").style.display = "none";
+    
+                }
+                
+            }
+    
+    
+            searchBtn.addEventListener("click",()=>{
+                checkWeather(searchBox.value);
+            })
+    
+        </script>   
+</body>
+</html>
